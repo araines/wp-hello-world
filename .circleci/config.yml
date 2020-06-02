@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - name: wordpress
-        image: circleci/wordpress:5.4-php7.3-apache
+        image: wordpress:5.4-php7.3-apache
         environment:
           WORDPRESS_DB_HOST: database
           WORDPRESS_DB_USER: wordpress
