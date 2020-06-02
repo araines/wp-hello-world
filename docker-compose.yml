@@ -1,0 +1,43 @@
+version: "2"
+
+services:
+  wordpress:
+    image: wordpress:5.4-php7.3-apache
+    environment:
+      WORDPRESS_DB_HOST: database
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - database
+    networks:
+      - front
+      - back
+    ports:
+      - 8080:80
+  #  photon:
+  #    image: chriszarate/photon:latest
+  #    networks:
+  #      - front
+  database:
+    image: mariadb:10.2
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    networks:
+      - back
+#  proxy:
+#    image: jwilder/nginx-proxy:alpine
+#    environment:
+#      HSTS: "off"
+#    ports:
+#      - 80:80
+#      - 443:443
+#    networks:
+#      - front
+
+networks:
+  front: {}
+  back: {}
