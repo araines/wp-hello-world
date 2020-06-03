@@ -3,22 +3,39 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/golang:latest
+      - image: circleci/php:7.3
+      - name: wordpress
+        image: wordpress:5.4-php7.3-apache
+        environment:
+          WORDPRESS_DB_HOST: database
+          WORDPRESS_DB_USER: wordpress
+          WORDPRESS_DB_PASSWORD: wordpress
+          WORDPRESS_DB_NAME: wordpress
+      - name: database
+        image: circleci/mariadb:10.1
+        environment:
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wordpress
+          MYSQL_PASSWORD: wordpress
+          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
 
     steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: docker-compose up -d
-      #      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      #      - run: sudo docker-php-ext-install zip
-      # Download and cache dependencies
-      #      - restore_cache:
-      #          keys:
-      #            # "composer.lock" can be used if it is committed to the repo
-      #            - v1-dependencies-{{ checksum "composer.json" }}
-      #            # fallback to using the latest cache if no exact match is found
-      #            - v1-dependencies-
+      - run: echo "Hello World"
+      - run: sleep 10
+      - run: curl http://wordpress
+#      - checkout
+
+#      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+#      - run: sudo docker-php-ext-install zip
+
+# Download and cache dependencies
+#      - restore_cache:
+#          keys:
+#            # "composer.lock" can be used if it is committed to the repo
+#            - v1-dependencies-{{ checksum "composer.json" }}
+#            # fallback to using the latest cache if no exact match is found
+#            - v1-dependencies-
+
 #      - run: composer install -n --prefer-dist
 
 #      - save_cache:
