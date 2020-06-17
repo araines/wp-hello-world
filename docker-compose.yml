@@ -1,9 +1,11 @@
-version: "2"
+version: "3"
 
 services:
   wordpress:
-    image: wordpress:5.4-php7.3-apache
+    image: wordpress:${WORDPRESS_VERSION}-php${PHP_VERSION}-apache
     environment:
+      HTTPS_METHOD: nohttps
+      VIRTUAL_HOST: wordpress
       WORDPRESS_DB_HOST: database
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
@@ -14,13 +16,17 @@ services:
       - front
       - back
     ports:
-      - 8080:80
-  #  photon:
-  #    image: chriszarate/photon:latest
-  #    networks:
-  #      - front
+      - 80:80
+    volumes:
+      - "wp:/var/www/html:rw"
+  wp-cli:
+    image: wordpress:cli-php${PHP_VERSION}
+    networks:
+      - back
+    volumes:
+      - "wp:/var/www/html:rw"
   database:
-    image: mariadb:10.2
+    image: mariadb:${MARIADB_VERSION}
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
@@ -28,16 +34,16 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     networks:
       - back
-#  proxy:
-#    image: jwilder/nginx-proxy:alpine
-#    environment:
-#      HSTS: "off"
-#    ports:
-#      - 80:80
-#      - 443:443
-#    networks:
-#      - front
+  tests:
+    image: php:${PHP_VERSION}-cli
+    networks:
+      - front
+    volumes:
+      - "./tests:/tmp/tests:ro"
 
 networks:
   front: {}
   back: {}
+
+volumes:
+  wp: {}
