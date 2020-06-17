@@ -13,11 +13,7 @@ jobs:
           command: docker-compose up -d
       - run:
           name: Wait for WordPress to become available
-          command: |
-            until $(curl --output /dev/null --silent --head --fail http://wordpress); do
-              printf '.'
-              sleep 1
-            done
+          command: sleep 15
       - run:
           name: Install WordPress
           command: |
