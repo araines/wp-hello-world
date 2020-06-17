@@ -26,4 +26,4 @@ jobs:
             --skip-email
       - run:
           name: Run test suite
-          command: docker-compose run --rm tests curl -I http://wordpress | grep '200 OK'
+          command: docker-compose run --rm tests composer test

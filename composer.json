@@ -14,5 +14,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^9.1"
+  },
+  "scripts": {
+    "test": "curl -I http://wordpress | grep '200 OK'"
   }
 }

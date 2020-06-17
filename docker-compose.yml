@@ -35,11 +35,13 @@ services:
     networks:
       - back
   tests:
-    image: php:${PHP_VERSION}-cli
+    build:
+      context: ./docker
+      dockerfile: tests.dockerfile
     networks:
       - front
     volumes:
-      - "./tests:/tmp/tests:ro"
+      - ".:/project:rw"
 
 networks:
   front: {}
